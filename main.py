@@ -16,25 +16,32 @@ mahmut.color("green")
 mahmut.penup()
 
 
-top_height = drawing_board.window_height()/2  # positive height/2 is the top of the screen
-y = top_height - top_height/10  # decreasing a little bit so text will be visible
-mahmut.setposition(0, y)
-mahmut.write(arg='score:', move=True, align='center', font=("arial", 20, "normal"))
+def timer_board():
+    t1 = turtle.Turtle()
+    t1.color("blue")
+    t1.penup()
+    t1.hideturtle()
+    top_height = drawing_board.window_height() / 2
+    timer_y = top_height - top_height / 6
+    t1.setposition(0, timer_y)
+    t1.write(arg='timer:', move=True, align='center', font=("arial", 20, "normal"))
 
 
+def score_board():
+    t2 = turtle.Turtle()
+    t2.color("black")
+    t2.penup()
+    t2.hideturtle()
+    top_height = drawing_board.window_height() / 2
+    score_y = top_height - top_height / 10
+    t2.setposition(0, score_y)
+    t2.write(arg='score:', move=True, align='center', font=("arial", 20, "normal"))
 
 
-# hideturtle()
-# write("SCORE", align="center", font=("Verdana", 15, "normal"))
+score_board()
+timer_board()
 
 
-
-
-def on_click():
-    print()
-
-
-mahmut.onclick(fun=on_click, btn=1)
 while True:
     mahmut.goto(x=randint(-300, 300), y=randint(-300, 300))
     time.sleep(1)
