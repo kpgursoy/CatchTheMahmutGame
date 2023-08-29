@@ -1,65 +1,67 @@
 import turtle
 import time
-from random import randint
+import random
 
-turtle.setup(900, 900)
-drawing_board = turtle.Screen()
-drawing_board.bgcolor("light blue")
-drawing_board.title("Catch The Mahmut")
-mahmut = turtle.Turtle()
+screen = turtle.Screen()
+turtle.bgcolor("light blue")
+screen.title("Catch The Mahmut")
+FONT = ('Arial', 30, 'normal')
 
-mahmut.shapesize(3)
-mahmut.speed(0)
-mahmut.shape('turtle')
-mahmut.color("green")
-mahmut.penup()
+grid_size = 10
 
-t1 = turtle.Turtle()
-t1.hideturtle()
-t1.penup()
-t1.color("blue")
+# score turtle
+score_turtle = turtle.Turtle()
 
-t2 = turtle.Turtle()
-t2.hideturtle()
-t2.penup()
-t2.color("black")
+# turtle list
+turtle_list = []
 
+def setup_score_turtle():
+    score_turtle.hideturtle()
+    score_turtle.color("dark blue")
+    score_turtle.penup()
 
-def timer_board():
-    timer = 20
-    while timer > 0:
-        t1.clear()
-        top_height = drawing_board.window_height() / 2
-        timer_y = top_height - top_height / 6
-        t1.setposition(0, timer_y)
-        t1.write(arg=f"timer : {timer}", move=True, align='center', font=("arial", 20, "normal"))
-        timer -= 1
-
-        mahmut.goto(x=randint(-300, 300), y=randint(-300, 300))
-        time.sleep(1)
-
-    t1.clear()
-    t1.write(arg="Time's up!", move=True, align='center', font=("arial", 20, "normal"))
+    top_height = screen.window_height() / 2
+    y = top_height * 0.9
+    score_turtle.setposition(0, y)
+    score_turtle.write(arg="Score: 0", move=False, align="center", font=FONT)
 
 
-def score_board():
-    top_height = drawing_board.window_height() / 2
-    y = top_height - top_height / 10
-    t2.setposition(0, y)
-    t2.write(arg='score:', move=True, align='center', font=("arial", 20, "normal"))
+def make_turtle(x, y):
+    t = turtle.Turtle()
+
+    t.penup()
+    t.shape('turtle')
+    t.shapesize(2, 2)
+    t.color("green")
+    t.goto(x * grid_size, y * grid_size)
+    turtle_list.append(t)
 
 
-score_board()
-timer_board()
+x_coordinates = [-20, -10, 0, 10, 20]
+y_coordinates = [20, 10, 0, -10]
 
 
-def update_score(x, y, current_score=0):
-    current_score += 1
-    top_height = drawing_board.window_height() / 2
-    y = top_height - top_height / 10
-    t2.setposition(0, y)
-    # Clear the previous score display
-    t2.write(arg=f'score: {current_score}', move=True, align='center', font=("arial", 20, "normal"))
+def setup_turtles():
+    for x in x_coordinates:
+        for y in y_coordinates:
+            make_turtle(x, y)
 
 
-mahmut.onclick(update_score)
+def hide_turtles():
+    for t in turtle_list:
+        t.hideturtle()
+
+
+def show_turtles_randomly():
+    random.choice(turtle_list).showturlte()
+
+
+turtle.tracer(0)
+setup_turtles()
+hide_turtles()
+show_turtles_randomly()
+
+setup_score_turtle()
+turtle.tracer(1)
+turtle.mainloop()
+
