@@ -1,12 +1,11 @@
 import turtle
-import time
 import random
 
 screen = turtle.Screen()
 turtle.bgcolor("light blue")
 screen.title("Catch The Mahmut")
 FONT = ('Arial', 30, 'normal')
-
+score = 0
 grid_size = 10
 
 # score turtle
@@ -14,6 +13,7 @@ score_turtle = turtle.Turtle()
 
 # turtle list
 turtle_list = []
+
 
 def setup_score_turtle():
     score_turtle.hideturtle()
@@ -29,6 +29,14 @@ def setup_score_turtle():
 def make_turtle(x, y):
     t = turtle.Turtle()
 
+    def handle_click(x, y):
+        global score
+        score += 1
+        score_turtle.clear()
+        score_turtle.write(arg=f"Score: {score}", move=False, align="center", font=FONT)
+        print(x, y)
+
+    t.onclick(handle_click)
     t.penup()
     t.shape('turtle')
     t.shapesize(2, 2)
@@ -53,15 +61,17 @@ def hide_turtles():
 
 
 def show_turtles_randomly():
-    random.choice(turtle_list).showturlte()
+    hide_turtles()
+    random.choice(turtle_list).showturtle()
+    screen.ontimer(show_turtles_randomly, 500)
 
 
 turtle.tracer(0)
+
 setup_turtles()
 hide_turtles()
 show_turtles_randomly()
-
 setup_score_turtle()
+
 turtle.tracer(1)
 turtle.mainloop()
-
