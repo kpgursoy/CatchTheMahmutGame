@@ -6,7 +6,7 @@ turtle.bgcolor("light blue")
 screen.title("Catch The Mahmut")
 FONT = ('Arial', 30, 'normal')
 score = 0
-grid_size = 10
+game_over = False
 
 # score turtle
 score_turtle = turtle.Turtle()
@@ -14,12 +14,19 @@ score_turtle = turtle.Turtle()
 # turtle list
 turtle_list = []
 
+# countdown turtle
+countdown_turtle = turtle.Turtle()
+
+# turtles coordinates
+x_coordinates = [-20, -10, 0, 10, 20]
+y_coordinates = [20, 10, 0, -10]
+grid_size = 10
+
 
 def setup_score_turtle():
     score_turtle.hideturtle()
     score_turtle.color("dark blue")
     score_turtle.penup()
-
     top_height = screen.window_height() / 2
     y = top_height * 0.9
     score_turtle.setposition(0, y)
@@ -45,10 +52,6 @@ def make_turtle(x, y):
     turtle_list.append(t)
 
 
-x_coordinates = [-20, -10, 0, 10, 20]
-y_coordinates = [20, 10, 0, -10]
-
-
 def setup_turtles():
     for x in x_coordinates:
         for y in y_coordinates:
@@ -61,17 +64,42 @@ def hide_turtles():
 
 
 def show_turtles_randomly():
+    if not game_over:
+        hide_turtles()
+        random.choice(turtle_list).showturtle()
+        screen.ontimer(show_turtles_randomly, 500)
+
+
+def countdown(time):
+    global game_over
+    countdown_turtle.hideturtle()
+    countdown_turtle.color("black")
+    countdown_turtle.penup()
+
+    top_height = screen.window_height() / 2
+    y = top_height * 0.7
+    countdown_turtle.setposition(0, y - 30)
+    countdown_turtle.clear()
+    if time > 0:
+        countdown_turtle.clear()
+        countdown_turtle.write(arg=f"Time : {time}", move=False, align="center", font=FONT)
+        screen.ontimer(lambda: countdown(time - 1), 1000)
+    else:
+        game_over = True
+        countdown_turtle.clear()
+        hide_turtles()
+        countdown_turtle.write(arg="Time is up !", move=False, align="center", font=FONT)
+
+
+def start_game_up():
+    turtle.tracer(0)
+    setup_turtles()
     hide_turtles()
-    random.choice(turtle_list).showturtle()
-    screen.ontimer(show_turtles_randomly, 500)
+    show_turtles_randomly()
+    setup_score_turtle()
+    countdown(10)
 
 
-turtle.tracer(0)
-
-setup_turtles()
-hide_turtles()
-show_turtles_randomly()
-setup_score_turtle()
-
+start_game_up()
 turtle.tracer(1)
 turtle.mainloop()
